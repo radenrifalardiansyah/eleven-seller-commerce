@@ -60,16 +60,19 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [companyCode, setCompanyCode] = useState("");
   const [authPage, setAuthPage] = useState<"login" | "register" | "forgot-password">("login");
 
-  const handleLogin = (email: string) => {
+  const handleLogin = (email: string, code: string) => {
     setIsAuthenticated(true);
     setUserEmail(email);
+    setCompanyCode(code);
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUserEmail("");
+    setCompanyCode("");
     setActiveTab("dashboard");
     setAuthPage("login");
   };
@@ -154,6 +157,10 @@ export default function App() {
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-2 border border-gray-200 rounded-full px-3 py-1.5">
+              <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 rounded px-1.5 py-0.5 tracking-widest font-mono">
+                {companyCode}
+              </span>
+              <div className="w-px h-3 bg-gray-200" />
               <div className="w-5 h-5 bg-indigo-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0">
                 {userEmail.charAt(0).toUpperCase()}
               </div>

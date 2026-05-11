@@ -3,15 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { ShoppingBag, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { ShoppingBag, Eye, EyeOff, Lock, Mail, Hash } from "lucide-react";
 
 interface LoginPageProps {
-  onLogin: (email: string, password: string) => void;
+  onLogin: (email: string, companyCode: string) => void;
   onForgotPassword: () => void;
   onRegister: () => void;
 }
 
 export function LoginPage({ onLogin, onForgotPassword, onRegister }: LoginPageProps) {
+  const [companyCode, setCompanyCode] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,8 +25,8 @@ export function LoginPage({ onLogin, onForgotPassword, onRegister }: LoginPagePr
     setIsLoading(true);
 
     // Simple validation
-    if (!email || !password) {
-      setError("Email dan password harus diisi");
+    if (!companyCode || !email || !password) {
+      setError("Company code, email, dan password harus diisi");
       setIsLoading(false);
       return;
     }
@@ -33,10 +34,10 @@ export function LoginPage({ onLogin, onForgotPassword, onRegister }: LoginPagePr
     // Simulate login delay
     setTimeout(() => {
       // Demo credentials - in production, this would call an API
-      if (email === "seller@example.com" && password === "password123") {
-        onLogin(email, password);
+      if (companyCode.toUpperCase() === "ELEVEN" && email === "seller@example.com" && password === "password123") {
+        onLogin(email, companyCode.toUpperCase());
       } else {
-        setError("Email atau password salah");
+        setError("Company code, email, atau password salah");
       }
       setIsLoading(false);
     }, 1000);
@@ -66,6 +67,25 @@ export function LoginPage({ onLogin, onForgotPassword, onRegister }: LoginPagePr
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Company Code Field */}
+              <div className="space-y-2">
+                <Label htmlFor="companyCode">Company Code</Label>
+                <div className="relative">
+                  <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="companyCode"
+                    type="text"
+                    placeholder="ELEVEN"
+                    value={companyCode}
+                    onChange={(e) => setCompanyCode(e.target.value.toUpperCase())}
+                    className="pl-10 uppercase tracking-widest font-mono"
+                    disabled={isLoading}
+                    autoComplete="organization"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">Kode unik perusahaan / klien Anda</p>
+              </div>
+
               {/* Email Field */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -144,6 +164,9 @@ export function LoginPage({ onLogin, onForgotPassword, onRegister }: LoginPagePr
             <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
               <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
                 Demo Credentials:
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-300">
+                Company Code: <span className="font-mono">ELEVEN</span>
               </p>
               <p className="text-xs text-blue-700 dark:text-blue-300">
                 Email: <span className="font-mono">seller@example.com</span>
